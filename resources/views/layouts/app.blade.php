@@ -63,6 +63,8 @@
     </div>
 
     <script>
+        // lakukan 2x percobaan data palsuuuuu supaya bisa untuk selanjutnya bisa sukses;
+
         //inisialisasi module
         var app = angular.module('myApp', ['ngRoute']);
         
@@ -86,6 +88,9 @@
         });
 
         app.run(function($rootScope, $http){
+            localStorage.range = null;
+            localStorage.tingkat = null;
+
             $rootScope.refreshPenyakit = function() {
                 $rootScope.penyakits = null;
 
@@ -194,12 +199,17 @@
 
                         $rootScope.tester.range = localStorage.range;
                         $rootScope.tester.keterangan = localStorage.tingkat;
+                        $rootScope.tester.range = $rootScope.range;
+                        $rootScope.tester.keterangan = $rootScope.tingkat;
 
                         $http({
                             url: '/tested/store',
                             method: 'post',
                             data: $rootScope.tester
                         }).then((response) => {
+                            localStorage.tester_id = response.data.id;
+                            localStorage.tester_id = response.data.id;
+
                             $rootScope.tester.id = response.data.id;
                         });
 
@@ -270,7 +280,7 @@
                 $rootScope.obats = response.data.obats;
             });
 
-            $rootScope.gejalaResultCreate.tester_id = $rootScope.tester.id;
+            $rootScope.gejalaResultCreate.tester_id = localStorage.tester_id;
             $rootScope.gejalaResultCreate._token = '{{ csrf_token() }}'
             $http({
                 url: '/result',
